@@ -13,10 +13,11 @@ namespace IDOLOnDemand.Model
 {
     public class ViewDocument
     {
+        private readonly IdolConnect _idolConnection;
 
         public string SyncEndpoint = "/sync/viewdocument/v1";
         public string AsyncEndpoint = "/async/viewdocument/v1";
-
+        
         public string Url { get; set; }
         public string File { get; set; }
         public string Reference { get; set; }
@@ -25,15 +26,17 @@ namespace IDOLOnDemand.Model
         public string Start_Tag { get; set; }
         public string End_Tag { get; set; }
 
-
-
+        public ViewDocument(IdolConnect idolConnection)
+        {
+            _idolConnection = idolConnection;
+        }
 
         public string Execute()
         {
             //Response is slightly different here as the result is just html string, not a json response.
             //left error checking in just in case.
 
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = _idolConnection.Connect(this, SyncEndpoint);
             ViewDocumentResponse.Value deseriaizedResponse = new ViewDocumentResponse.Value();
 
             try

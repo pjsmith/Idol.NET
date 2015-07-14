@@ -13,6 +13,7 @@ namespace IDOLOnDemand.Model
 {
     public class ExpandContainer
     {
+        private readonly IdolConnect _idolConnection;
 
         public string SyncEndpoint = "/sync/expandcontainer/v1";
         public string AsyncEndpoint = "/async/expandcontainer/v1";
@@ -23,12 +24,14 @@ namespace IDOLOnDemand.Model
         public int Depth { get; set; }
         public string Password { get; set; }
 
-
-
+        public ExpandContainer(IdolConnect idolConnection)
+        {
+            _idolConnection = idolConnection;
+        }
 
         public ExpandContainerResponse.Value Execute()
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = _idolConnection.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<ExpandContainerResponse.Value>(apiResults);
 
             if (deseriaizedResponse.message == null & deseriaizedResponse.detail == null)

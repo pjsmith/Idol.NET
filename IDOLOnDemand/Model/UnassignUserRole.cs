@@ -13,21 +13,23 @@ namespace IDOLOnDemand.Model
 {
     public class UnassignUserRole
     {
+        private readonly IdolConnect _idolConnection;
 
         public string SyncEndpoint = "/sync/unassignrole/v1";
         public string AsyncEndpoint = "/async/unassignrole/v1";
 
-       
         public string Store { get; set; }
         public string User { get; set; }
         public string Role { get; set; }
 
-
-
+        public UnassignUserRole(IdolConnect idolConnection)
+        {
+            _idolConnection = idolConnection;
+        }
 
         public UnassignUserRoleResponse.Value Execute()
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = _idolConnection.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<UnassignUserRoleResponse.Value>(apiResults);
 
             if (deseriaizedResponse.message != null)

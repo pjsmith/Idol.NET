@@ -16,6 +16,7 @@ namespace IDOLOnDemand.Model
 
         public string SyncEndpoint = "/sync/extracttext/v1";
         public string AsyncEndpoint = "/async/extracttext/v1";
+        private IdolConnect _idolConnection;
 
         public string Url { get; set; }
         public string File { get; set; }
@@ -27,13 +28,14 @@ namespace IDOLOnDemand.Model
         public string Reference_Prefix { get; set; }
         public string Password { get; set; }
 
-
-
-
+        public ExtractText(IdolConnect idolConnection)
+        {
+            _idolConnection = idolConnection;
+        }
 
         public ExtractTextResponse.Value Execute()
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = _idolConnection.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<ExtractTextResponse.Value>(apiResults);
 
             if (deseriaizedResponse.message == null & deseriaizedResponse.detail == null)

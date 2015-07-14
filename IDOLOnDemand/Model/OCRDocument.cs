@@ -12,6 +12,7 @@ namespace IDOLOnDemand.Model
 {
     public class OCRDocument
     {
+        private readonly IdolConnect _idolConnection;
 
         public string SyncEndpoint = "/sync/ocrdocument/v1";
         public string AsyncEndpoint = "/async/ocrdocument/v1";
@@ -41,11 +42,14 @@ namespace IDOLOnDemand.Model
         public string Reference { get; set; }
 
 
-
+        public OCRDocument(IdolConnect idolConnection)
+        {
+            _idolConnection = idolConnection;
+        }
 
         public OCRDocumentResponse.Value Execute()
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = _idolConnection.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<OCRDocumentResponse.Value>(apiResults);
 
             if (deseriaizedResponse.message == null & deseriaizedResponse.detail == null)

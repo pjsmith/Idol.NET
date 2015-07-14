@@ -21,6 +21,7 @@ namespace IDOLOnDemand.Model
         public string Description { get; set; }
 
         private FlavorType _flavor;
+        private IdolConnect _idolConnection;
 
         public FlavorType Flavor
         {
@@ -41,11 +42,14 @@ namespace IDOLOnDemand.Model
         }
 
 
-
+        public CreateTextIndex(IdolConnect idolConnection)
+        {
+            _idolConnection = idolConnection;
+        }
 
         public CreateTextIndexResponse.Value Execute()
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = _idolConnection.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<CreateTextIndexResponse.Value>(apiResults);
 
             if (deseriaizedResponse.error == 0)

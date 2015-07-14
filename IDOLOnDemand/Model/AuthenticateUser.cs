@@ -13,6 +13,7 @@ namespace IDOLOnDemand.Model
 {
     public class AuthenticateUser
     {
+        private IdolConnect _idolConnection;
 
         public string SyncEndpoint = "/sync/authenticate/v1";
         public string AsyncEndpoint = "/async/authenticate/v1";
@@ -34,13 +35,14 @@ namespace IDOLOnDemand.Model
             set { _mechanism = value; }
         }
 
-
-
-
+        public AuthenticateUser(IdolConnect idolConnection)
+        {
+            _idolConnection = idolConnection;
+        }
 
         public AuthenticateUserResponse.Value Execute()
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = _idolConnection.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<AuthenticateUserResponse.Value>(apiResults);
 
             if (deseriaizedResponse.success == true | deseriaizedResponse.success == false)

@@ -14,6 +14,7 @@ namespace IDOLOnDemand.Model
 {
     public class RecognizeImages
     {
+        private readonly IdolConnect _idolConnection;
 
         public string SyncEndpoint = "/sync/recognizeimages/v1";
         public string AsyncEndpoint = "/async/recognizeimages/v1";
@@ -47,14 +48,15 @@ namespace IDOLOnDemand.Model
             get { return _match_image; }
             set { _match_image = value; }
         }
-        
 
-
-
+        public RecognizeImages(IdolConnect idolConnection)
+        {
+            _idolConnection = idolConnection;
+        }
 
         public RecognizeImagesResponse.Value Execute()
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = _idolConnection.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<RecognizeImagesResponse.Value>(apiResults);
 
             if (deseriaizedResponse.message == null & deseriaizedResponse.detail == null)

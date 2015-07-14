@@ -13,19 +13,21 @@ namespace IDOLOnDemand.Model
 {
     public class ListUsers
     {
+        private readonly IdolConnect _idolConnection;
 
         public string SyncEndpoint = "/sync/listusers/v1";
         public string AsyncEndpoint = "/async/listusers/v1";
 
         public string Store { get; set; }
 
-
-
-
+        public ListUsers(IdolConnect idolConnection)
+        {
+            _idolConnection = idolConnection;
+        }
 
         public ListUsersResponse.Value Execute()
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = _idolConnection.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<ListUsersResponse.Value>(apiResults);
 
 

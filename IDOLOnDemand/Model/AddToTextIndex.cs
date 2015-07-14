@@ -12,6 +12,7 @@ namespace IDOLOnDemand.Model
 {
     public class AddToTextIndex
     {
+        private readonly IdolConnect _idolConnection;
 
         public string SyncEndpoint = "/sync/addtotextindex/v1";
         public string AsyncEndpoint = "/async/addtotextindex/v1";
@@ -39,11 +40,14 @@ namespace IDOLOnDemand.Model
             set { _duplicate_mode = value; }
         }
 
-
+        public AddToTextIndex(IdolConnect idolConnection)
+        {
+            _idolConnection = idolConnection;
+        }
 
         public AddToTextIndexResponse.Value Execute()
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = _idolConnection.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<AddToTextIndexResponse.Value>(apiResults);
 
             if (deseriaizedResponse.message == null & deseriaizedResponse.error == 0)

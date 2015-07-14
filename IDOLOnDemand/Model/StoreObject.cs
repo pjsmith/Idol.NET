@@ -12,6 +12,7 @@ namespace IDOLOnDemand.Model
 {
     public class StoreObject
     {
+        private readonly IdolConnect _idolConnection;
 
         public string SyncEndpoint = "/sync/storeobject/v1";
         public string AsyncEndpoint = "/async/storeobject/v1";
@@ -21,11 +22,14 @@ namespace IDOLOnDemand.Model
         public string Reference { get; set; }
 
 
-
+        public StoreObject(IdolConnect idolConnection)
+        {
+            _idolConnection = idolConnection;
+        }
 
         public StoreObjectResponse.Value Execute()
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = _idolConnection.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<StoreObjectResponse.Value>(apiResults);
 
             if (deseriaizedResponse.message == null & deseriaizedResponse.detail == null)

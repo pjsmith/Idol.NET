@@ -13,19 +13,21 @@ namespace IDOLOnDemand.Model
 {
     public class ListRoles
     {
+        private readonly IdolConnect _idolConnection;
 
         public string SyncEndpoint = "/sync/listroles/v1";
         public string AsyncEndpoint = "/async/listroles/v1";
 
-       
         public string Store { get; set; }
 
-
-
+        public ListRoles(IdolConnect idolConnection)
+        {
+            _idolConnection = idolConnection;
+        }
 
         public ListRolesResponse.Value Execute()
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = _idolConnection.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<ListRolesResponse.Value>(apiResults);
 
             if (deseriaizedResponse.message == null & deseriaizedResponse.detail == null)
@@ -34,13 +36,9 @@ namespace IDOLOnDemand.Model
             }
             else
             {
-               
-                    throw new InvalidJobArgumentsException(deseriaizedResponse.detail[0]);
-               
+                throw new InvalidJobArgumentsException(deseriaizedResponse.detail[0]);
             }
-
         }
     }
-
 
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using IDOLOnDemand.Exceptions;
@@ -95,6 +96,7 @@ namespace IDOLOnDemand.Model
         }
 
         private BarcodeType _barcode_type;
+        private IdolConnect _idolConnection;
 
         public BarcodeType Barcode_Type
         {
@@ -107,10 +109,14 @@ namespace IDOLOnDemand.Model
         public string File { get; set; }
         public string Reference { get; set; }
 
+        public BarcodeRecognition(IdolConnect idolConnection)
+        {
+            _idolConnection = idolConnection;
+        }
 
         public BarcodeRecognitionResponse.Value Execute()
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = _idolConnection.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<BarcodeRecognitionResponse.Value>(apiResults);
 
             if (deseriaizedResponse.message == null & deseriaizedResponse.detail == null)

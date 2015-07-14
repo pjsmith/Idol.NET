@@ -13,20 +13,22 @@ namespace IDOLOnDemand.Model
 {
     public class DeleteUser
     {
+        private IdolConnect _idolConnection;
 
         public string SyncEndpoint = "/sync/deleteuser/v1";
         public string AsyncEndpoint = "/async/deleteuser/v1";
-
+        
         public string Store { get; set; }
         public string Email { get; set; }
-     
 
-
-
+        public DeleteUser(IdolConnect idolConnection)
+        {
+            _idolConnection = idolConnection;
+        }
 
         public DeleteUserResponse.Value Execute()
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = _idolConnection.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<DeleteUserResponse.Value>(apiResults);
 
             if (deseriaizedResponse.status != "failed" & deseriaizedResponse.status != null)

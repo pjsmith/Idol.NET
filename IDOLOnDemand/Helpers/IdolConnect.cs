@@ -8,18 +8,20 @@ using System.Reflection;
 using System.ComponentModel;
 using System.Configuration;
 
-
-
-
 namespace IDOLOnDemand.Helpers
 {
-
     public class IdolConnect : IDOLOnDemand.Endpoints.QueryTextIndexEndpoint
     {
-        static string apiURL = ConfigurationManager.AppSettings["BaseURL"];
-        static string apiKey = ConfigurationManager.AppSettings["ApiKey"];
-    
-        public static string Connect(object requestParams, string endpoint)
+        private readonly string _apiUri;
+        private readonly string _apiKey;
+
+        public IdolConnect(string apiUri, string apiKey)
+        {
+            _apiUri = apiUri;
+            _apiKey = apiKey;
+        }
+
+        public string Connect(object requestParams, string endpoint)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             foreach (var item in requestParams.GetType().GetProperties())
@@ -33,11 +35,10 @@ namespace IDOLOnDemand.Helpers
 
         }
 
-
-        private static string MakeHttpRequest(Dictionary<string, string> requestParams, string endpoint)
+        private string MakeHttpRequest(Dictionary<string, string> requestParams, string endpoint)
         {
 
-            var client = new RestClient(apiURL);
+            var client = new RestClient(_apiUri);
             var request = new RestRequest(endpoint, Method.POST);
 
             foreach (var entry in requestParams)
@@ -50,21 +51,18 @@ namespace IDOLOnDemand.Helpers
                     {
                         request.AddParameter(entry.Key, x);
                     }
-
                 }
                 else
                 {
                     request.AddParameter(entry.Key, entry.Value);
                 }
             }
-            request.AddParameter("apikey", apiKey);
+            request.AddParameter("apikey", _apiKey);
 
             var response = client.Execute(request);
-
 
             var content = response.Content;
             return content;
         }
-
     }
 }

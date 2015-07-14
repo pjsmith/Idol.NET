@@ -13,18 +13,21 @@ namespace IDOLOnDemand.Model
 {
     public class AddUserStore
     {
+        private readonly IdolConnect _idolConnection;
 
         public string SyncEndpoint = "/sync/addstore/v1";
         public string AsyncEndpoint = "/async/addstore/v1";
 
         public string Store { get; set; }
 
-
-
+        public AddUserStore(IdolConnect idolConnection)
+        {
+            _idolConnection = idolConnection;
+        }
 
         public AddUserStoreResponse.Value Execute()
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = _idolConnection.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<AddUserStoreResponse.Value>(apiResults);
 
             if (deseriaizedResponse.message == "store was added")

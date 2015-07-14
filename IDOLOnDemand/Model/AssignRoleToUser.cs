@@ -14,6 +14,7 @@ namespace IDOLOnDemand.Model
 {
     public class AssignRoleToUser
     {
+        private readonly IdolConnect _idolConnection;
 
         public string SyncEndpoint = "/sync/assignrole/v1";
         public string AsyncEndpoint = "/async/assignrole/v1";
@@ -22,13 +23,14 @@ namespace IDOLOnDemand.Model
         public string User { get; set; }
         public string Role { get; set; }
 
-
-
-
+        public AssignRoleToUser(IdolConnect idolConnection)
+        {
+            _idolConnection = idolConnection;
+        }
 
         public AssignRoleToUserResponse.Value Execute()
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = _idolConnection.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<AssignRoleToUserResponse.Value>(apiResults);
 
             if (deseriaizedResponse.message == "role now assigned")

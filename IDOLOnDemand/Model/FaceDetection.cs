@@ -14,6 +14,7 @@ namespace IDOLOnDemand.Model
 {
     public class FaceDetection
     {
+        private readonly IdolConnect _idolConnection;
 
         public string SyncEndpoint = "/sync/detectfaces/v1";
         public string AsyncEndpoint = "/async/detectfaces/v1";
@@ -23,12 +24,14 @@ namespace IDOLOnDemand.Model
         public string File { get; set; }
         public string Reference { get; set; }
 
-
-
+        public FaceDetection(IdolConnect idolConnection)
+        {
+            _idolConnection = idolConnection;
+        }
 
         public FaceDetectionResponse.Value Execute()
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = _idolConnection.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<FaceDetectionResponse.Value>(apiResults);
 
             if (deseriaizedResponse.message == null & deseriaizedResponse.detail == null)

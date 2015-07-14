@@ -163,11 +163,12 @@ namespace IDOLOnDemand.Model
 
         #endregion Enums
 
+        private IdolConnect _idolConnection;
+
         #region properties
 
         public string SyncEndpoint = "/sync/querytextindex/v1";
         public string AsyncEndpoint = "/async/querytextindex/v1";
-
         
         ///<summary> The query text</summary>
         public string Text { get; set; }
@@ -216,9 +217,14 @@ namespace IDOLOnDemand.Model
 
         #endregion
 
+        public QueryTexIndex(IdolConnect idolConnection)
+        {
+            _idolConnection = idolConnection;
+        }
+
         public QueryTextIndexResponse.Value Execute()
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = _idolConnection.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<QueryTextIndexResponse.Value>(apiResults);
 
             if (deseriaizedResponse.message == null)

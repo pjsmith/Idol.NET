@@ -13,6 +13,8 @@ namespace IDOLOnDemand.Model
 {
     public class SentimentAnalysis
     {
+        private readonly IdolConnect _idolConnection;
+
         #region Enums
         public enum LanguageSelection
         {
@@ -59,14 +61,14 @@ namespace IDOLOnDemand.Model
             set { _language = value; }
         }
 
-
-
-
-
+        public SentimentAnalysis(IdolConnect idolConnection)
+        {
+            _idolConnection = idolConnection;
+        }
 
         public SentimentAnalysisResponse.Value Execute()
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = _idolConnection.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<SentimentAnalysisResponse.Value>(apiResults);
         
             if (deseriaizedResponse.message == null & deseriaizedResponse.detail == null)

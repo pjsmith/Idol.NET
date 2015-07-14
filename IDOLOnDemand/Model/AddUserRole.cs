@@ -13,20 +13,22 @@ namespace IDOLOnDemand.Model
 {
     public class AddUserRole
     {
+        private readonly IdolConnect _idolConnection;
 
         public string SyncEndpoint = "/sync/addrole/v1";
         public string AsyncEndpoint = "/async/addrole/v1";
 
         public string Store { get; set; }
         public string Role { get; set; }
-      
 
-
-
+        public AddUserRole(IdolConnect idolConnection)
+        {
+            _idolConnection = idolConnection;
+        }
 
         public AddUserRoleResponse.Value Execute()
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = _idolConnection.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<AddUserRoleResponse.Value>(apiResults);
 
             if (deseriaizedResponse.message == "role was added")

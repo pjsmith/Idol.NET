@@ -13,21 +13,23 @@ namespace IDOLOnDemand.Model
 {
     public class ListUserRoles
     {
+        private IdolConnect _idolConnection;
 
         public string SyncEndpoint = "/sync/listuserroles/v1";
         public string AsyncEndpoint = "/async/listuserroles/v1";
-
-       
+        
         public string Store { get; set; }
         public string Users { get; set; }
         public string Roles { get; set; }
 
-
-
+        public ListUserRoles(IdolConnect idolConnection)
+        {
+            _idolConnection = idolConnection;
+        }
 
         public ListUserRolesResponse.Value Execute()
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = _idolConnection.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<ListUserRolesResponse.Value>(apiResults);
 
             if (deseriaizedResponse.status != "failed" & deseriaizedResponse.status != null)
