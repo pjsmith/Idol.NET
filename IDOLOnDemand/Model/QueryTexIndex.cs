@@ -13,7 +13,7 @@ using IDOLOnDemand.Exceptions;
 
 namespace IDOLOnDemand.Model
 {
-    public class QueryTexIndex
+    public class QueryTexIndex : IIdolRequest
     {
        
 
@@ -172,11 +172,6 @@ namespace IDOLOnDemand.Model
         ///<summary> The query text</summary>
         public string Text { get; set; }
 
-        //<summary> A file containing the query text. Multi part POST only.</summary>
-        public string File { get; set; }
-
-        public string Reference { get; set; } //<summary> The query text</summary>
-        public string Url { get; set; } //<summary> The query text</summary>
         public string Field_Text { get; set; } //<summary> The query text</summary>
         public int Start { get; set; }
         public int Max_Page_Results { get; set; }
@@ -189,7 +184,8 @@ namespace IDOLOnDemand.Model
         public string Min_Score { get; set; }
         public bool Total_Results { get; set; }
         public string Start_Tag { get; set; }
-
+        public AdditionalMetadata Metadata { get; set; }
+        public IInputSource InputSource { get; set; }
 
         public PrintType Print
         {
@@ -216,7 +212,7 @@ namespace IDOLOnDemand.Model
 
         #endregion
 
-        public QueryTextIndexResponse.Value Execute()
+        public QueryTextIndexResponse.Value Execute(string name, IInputSource inputSource, AdditionalMetadata metadata, string optional = null)
         {
             var apiResults = IdolConnect.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<QueryTextIndexResponse.Value>(apiResults);
@@ -230,5 +226,63 @@ namespace IDOLOnDemand.Model
                 throw new APIFailedException(deseriaizedResponse.message);
             }
         }
+
+        public Dictionary<string, string> ToParameterDictionary()
+        {
+            var dict =  new Dictionary<string, string>
+            {
+                { "Text", this.Text },
+                { "Field_Text", this.Field_Text },
+                { "Start", this.Start.ToString() },
+                { "Max_Page_Results", this.Max_Page_Results.ToString() },
+                { "Absolute_Max_Results", this.Absolute_Max_Results.ToString() },
+                { "Indexes", this.Indexes },
+                { "Query_Profile", this.Query_Profile },
+                { "Print_Fields", this.Print_Fields },
+                { "Min_Date", this.Min_Date },
+                { "Max_Date", this.Max_Date },
+                { "Min_Score", this.Min_Score },
+                { "Total_Results", this.Total_Results.ToString() },
+                { "Start_Tag", this.Start_Tag },
+                { "Metadata", this.Metadata.ToString() }
+            };
+
+            dict.Add(InputSource.Key, InputSource.Value);
+        }
+
+        public abstract class AdditionalMetadata 
+        {
+        }
+
+        public class StringMetadata : AdditionalMetadata
+        {
+            private readonly string _content;
+
+            public StringMetadata(string content)
+            {
+                _content = content;
+            }
+
+            public override string ToString()
+            {
+                return _content;
+            }
+        }
+
+        public class ArrayMetadata : AdditionalMetadata
+        {
+            private readonly string[] _content;
+
+            public ArrayMetadata(string[] content)
+            {
+                _content = content;
+            }
+
+            public override string ToString()
+            {
+                return String.Join("|", _content);
+            }
+        }
     }
+
 }

@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 
 namespace IDOLOnDemand.Model
 {
-    public class AssignRoleToUser
+    public class AssignRoleToUser : IIdolRequest
     {
 
         public string SyncEndpoint = "/sync/assignrole/v1";
@@ -66,15 +66,13 @@ namespace IDOLOnDemand.Model
 
         public Dictionary<string, string> ToParameterDictionary()
         {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            foreach (var item in this.GetType().GetProperties())
+            return new Dictionary<string, string>
             {
-                if (item.GetValue(this, null) != null)
-                {
-                    parameters.Add(item.Name, item.GetValue(this, null).ToString());
-                }
-            }
-            return parameters;
+                { "Store", this.Store},
+                { "User", this.User },
+        public string Role { get; set; }
+
+            };
         }
     }
 }

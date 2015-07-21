@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Endpoints\IInputSource.cs" />
     <Compile Include="Endpoints\QueryTextIndexEndpoint.cs" />
     <Compile Include="Exceptions\APIFailedException.cs" />
     <Compile Include="Exceptions\InvalidJobArgumentsException.cs" />

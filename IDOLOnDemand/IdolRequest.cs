@@ -18,6 +18,7 @@ namespace IDOLOnDemand
                     parameters.Add(item.Name, item.GetValue(this, null).ToString());
                 }
             }
+
             return parameters;
         }
     }

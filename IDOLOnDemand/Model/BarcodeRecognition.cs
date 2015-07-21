@@ -103,11 +103,6 @@ namespace IDOLOnDemand.Model
         }
 
 
-        public string Url { get; set; }
-        public string File { get; set; }
-        public string Reference { get; set; }
-
-
         public BarcodeRecognitionResponse.Value Execute()
         {
             var apiResults = IdolConnect.Connect(this, SyncEndpoint);
