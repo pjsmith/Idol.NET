@@ -19,20 +19,10 @@ namespace IDOLOnDemand.Helpers
         static string apiURL = ConfigurationManager.AppSettings["BaseURL"];
         static string apiKey = ConfigurationManager.AppSettings["ApiKey"];
     
-        public static string Connect(object requestParams, string endpoint)
+        public static string Connect(IIdolRequest request, string endpoint)
         {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            foreach (var item in requestParams.GetType().GetProperties())
-            {
-                if (item.GetValue(requestParams, null) != null)
-                {
-                    parameters.Add(item.Name, item.GetValue(requestParams, null).ToString());
-                }
-            }
-            return MakeHttpRequest(parameters, endpoint);
-
+            return MakeHttpRequest(request.ToParameterDictionary(), endpoint);
         }
-
 
         private static string MakeHttpRequest(Dictionary<string, string> requestParams, string endpoint)
         {
@@ -50,7 +40,6 @@ namespace IDOLOnDemand.Helpers
                     {
                         request.AddParameter(entry.Key, x);
                     }
-
                 }
                 else
                 {

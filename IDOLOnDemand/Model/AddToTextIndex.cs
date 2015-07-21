@@ -10,11 +10,12 @@ using IDOLOnDemand.Exceptions;
 
 namespace IDOLOnDemand.Model
 {
-    public class AddToTextIndex
+    public class AddToTextIndex : IdolRequest
     {
-
         public string SyncEndpoint = "/sync/addtotextindex/v1";
         public string AsyncEndpoint = "/async/addtotextindex/v1";
+
+        public string DuplicateModeName { get { return DuplicateMode.ToString(); } }
 
         public string Url { get; set; }
         public string Json { get; set; }
@@ -70,9 +71,7 @@ namespace IDOLOnDemand.Model
                     }
                 }
             }
-
         }
     }
-
 
 }

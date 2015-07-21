@@ -55,6 +55,8 @@
     <Compile Include="Helpers\IdolConnect.cs" />
     <Compile Include="Helpers\StringOrArrayConverter.cs" />
     <Compile Include="Helpers\Tools.cs" />
+    <Compile Include="IdolRequest.cs" />
+    <Compile Include="IIdolRequest.cs" />
     <Compile Include="Model\AddToTextIndex.cs" />
     <Compile Include="Model\AddUserRole.cs" />
     <Compile Include="Model\AddUserStore.cs" />
