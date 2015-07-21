@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authentication\IIdolAuthenticator.cs" />
     <Compile Include="Endpoints\QueryTextIndexEndpoint.cs" />
     <Compile Include="Exceptions\APIFailedException.cs" />
     <Compile Include="Exceptions\InvalidJobArgumentsException.cs" />

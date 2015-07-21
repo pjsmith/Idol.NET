@@ -8,13 +8,15 @@ using IDOLOnDemand.Helpers;
 using Newtonsoft.Json;
 using IDOLOnDemand.Response;
 using System.Runtime.Serialization;
-
+using IDOLOnDemand.Authentication;
 
 
 namespace IDOLOnDemand.Model
 {
     public class BarcodeRecognition
     {
+        private readonly Uri _baseIdolUri;
+        private readonly IIdolAuthenticator _authenticator;
 
         public string SyncEndpoint = "/sync/recognizebarcodes/v1";
         public string AsyncEndpoint = "/async/recognizebarcodes/v1";
@@ -86,31 +88,19 @@ namespace IDOLOnDemand.Model
         #endregion Enums
 
 
-        private Orientation _barcode_orientation;
-
-        public Orientation Barcode_Orientation
-        {
-            get { return _barcode_orientation; }
-            set { _barcode_orientation = value; }
-        }
-
-        private BarcodeType _barcode_type;
-
-        public BarcodeType Barcode_Type
-        {
-            get { return _barcode_type; }
-            set { _barcode_type = value; }
-        }
-
-
-        public string Url { get; set; }
         public string File { get; set; }
         public string Reference { get; set; }
 
 
-        public BarcodeRecognitionResponse.Value Execute()
+        public BarcodeRecognition(Uri baseIdolUri, IIdolAuthenticator authenticator)
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            _baseIdolUri = baseIdolUri;
+            _authenticator = authenticator;
+        }
+
+        public BarcodeRecognitionResponse.Value Execute(BarcodeType type, Orientation barcodeOrientation, Uri target)
+        {
+            var apiResults = new IdolConnect(_baseIdolUri, _authenticator).Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<BarcodeRecognitionResponse.Value>(apiResults);
 
             if (deseriaizedResponse.message == null & deseriaizedResponse.detail == null)
@@ -131,6 +121,5 @@ namespace IDOLOnDemand.Model
 
         }
     }
-
 
 }
