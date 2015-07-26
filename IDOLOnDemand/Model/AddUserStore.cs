@@ -21,7 +21,6 @@ namespace IDOLOnDemand.Model
 
 
 
-
         public AddUserStoreResponse.Value Execute()
         {
             var apiResults = IDOLConnection.Connect(this, SyncEndpoint);

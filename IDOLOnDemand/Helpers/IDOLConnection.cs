@@ -18,8 +18,14 @@ namespace IDOLOnDemand.Helpers
     {
         static string apiURL = ConfigurationManager.AppSettings["BaseURL"];
         static string apiKey = ConfigurationManager.AppSettings["ApiKey"];
-    
+
         public static string Connect(object requestParams, string endpoint)
+        {
+            var connection = new IDOLConnection();
+            return connection.SendRequest(requestParams, endpoint);
+        }
+
+        public string SendRequest(object requestParams, string endpoint)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             foreach (var item in requestParams.GetType().GetProperties())
