@@ -52,7 +52,7 @@
     <Compile Include="Exceptions\InvalidJobArgumentsException.cs" />
     <Compile Include="Helpers\AsyncJob.cs" />
     <Compile Include="Helpers\EnumUtils.cs" />
-    <Compile Include="Helpers\IdolConnect.cs" />
+    <Compile Include="Helpers\IDOLConnection.cs" />
     <Compile Include="Helpers\StringOrArrayConverter.cs" />
     <Compile Include="Helpers\Tools.cs" />
     <Compile Include="Model\AddToTextIndex.cs" />

@@ -33,7 +33,7 @@ namespace IDOLOnDemand.Model
             //Response is slightly different here as the result is just html string, not a json response.
             //left error checking in just in case.
 
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = IDOLConnection.Connect(this, SyncEndpoint);
             ViewDocumentResponse.Value deseriaizedResponse = new ViewDocumentResponse.Value();
 
             try

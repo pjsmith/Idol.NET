@@ -14,7 +14,7 @@ using System.Configuration;
 namespace IDOLOnDemand.Helpers
 {
 
-    public class IdolConnect : IDOLOnDemand.Endpoints.QueryTextIndexEndpoint
+    public class IDOLConnection : IDOLOnDemand.Endpoints.QueryTextIndexEndpoint
     {
         static string apiURL = ConfigurationManager.AppSettings["BaseURL"];
         static string apiKey = ConfigurationManager.AppSettings["ApiKey"];

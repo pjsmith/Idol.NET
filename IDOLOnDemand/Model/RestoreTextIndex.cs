@@ -27,7 +27,7 @@ namespace IDOLOnDemand.Model
 
         public RestoreTextIndexResponse.Value Execute()
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = IDOLConnection.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<RestoreTextIndexResponse.Value>(apiResults);
                
 

@@ -28,7 +28,7 @@ namespace IDOLOnDemand.Model
 
         public AssignRoleToUserResponse.Value Execute()
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = IDOLConnection.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<AssignRoleToUserResponse.Value>(apiResults);
 
             if (deseriaizedResponse.message == "role now assigned")

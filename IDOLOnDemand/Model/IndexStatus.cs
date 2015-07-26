@@ -24,7 +24,7 @@ namespace IDOLOnDemand.Model
 
         public IndexStatusResponse.Value Execute()
         {
-            var apiResults = IdolConnect.Connect(this, SyncEndpoint);
+            var apiResults = IDOLConnection.Connect(this, SyncEndpoint);
             var deseriaizedResponse = JsonConvert.DeserializeObject<IndexStatusResponse.Value>(apiResults);
 
             if (deseriaizedResponse.detail == null)
