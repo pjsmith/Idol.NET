@@ -13,15 +13,25 @@ using System.Configuration;
 
 namespace IDOLOnDemand.Helpers
 {
-
     public class IDOLConnection : IDOLOnDemand.Endpoints.QueryTextIndexEndpoint
     {
-        static string apiURL = ConfigurationManager.AppSettings["BaseURL"];
-        static string apiKey = ConfigurationManager.AppSettings["ApiKey"];
+        private readonly Func<string, IRestClient> _restClientFactory;
+        private readonly string _baseUri;
+        private readonly string _apiKey;
+
+        public IDOLConnection(Func<string, IRestClient> restClientFactory, string baseUri, string apiKey)
+        {
+            _restClientFactory = restClientFactory;
+            _baseUri = baseUri;
+            _apiKey = apiKey;
+        }
 
         public static string Connect(object requestParams, string endpoint)
         {
-            var connection = new IDOLConnection();
+            string apiURL = ConfigurationManager.AppSettings["BaseURL"];
+            string apiKey = ConfigurationManager.AppSettings["ApiKey"];
+
+            var connection = new IDOLConnection(uri => new RestClient(uri), apiURL, apiKey);
             return connection.SendRequest(requestParams, endpoint);
         }
 
@@ -36,14 +46,12 @@ namespace IDOLOnDemand.Helpers
                 }
             }
             return MakeHttpRequest(parameters, endpoint);
-
         }
 
-
-        private static string MakeHttpRequest(Dictionary<string, string> requestParams, string endpoint)
+        private string MakeHttpRequest(Dictionary<string, string> requestParams, string endpoint)
         {
 
-            var client = new RestClient(apiURL);
+            var client = _restClientFactory(_baseUri);
             var request = new RestRequest(endpoint, Method.POST);
 
             foreach (var entry in requestParams)
@@ -63,7 +71,7 @@ namespace IDOLOnDemand.Helpers
                     request.AddParameter(entry.Key, entry.Value);
                 }
             }
-            request.AddParameter("apikey", apiKey);
+            request.AddParameter("apikey", _apiKey);
 
             var response = client.Execute(request);
 
